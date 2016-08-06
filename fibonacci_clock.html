@@ -12,97 +12,97 @@
 
 		// Contains all the different ways of representing a given number 0-12.
 		// At runtime we pick one of the representations randomly.
-	    var REPRS = {
-	    	0: [],
-	    	1: [
-	    		['1a'],
-	    		['1b']
-	    	],
-	    	2: [
-	    		['1a', '1b'],
-	    		['2']
-	    	],
-	    	3: [
-	    		['1a', '2'],
-	    		['1b', '2'],
-	    		['3']
-	    	],
-	    	4: [
-	    		['1a', '3'],
-	    		['1b', '3']
-	    	],
-	    	5: [
-	    		['1a', '1b', '3'],
-	    		['2', '3'],
-	    		['5']
-	    	],
-	    	6: [
-	    		['1a', '5'],
-	    		['1b', '5'],
-	    		['1a', '2', '3'],
-	    		['1b', '2', '3']
-	    	],
-	    	7: [
-	    		['1a', '1b', '2', '3'],
-	    		['1a', '1b', '5'],
-	    		['2', '5']
-	    	],
-	    	8: [
-	    		['1a', '2', '5'],
-	    		['1b', '2', '5'],
-	    		['3', '5']
-	    	],
-	    	9: [
-	    		['1a', '1b', '2', '5'],
-	    		['1a', '3', '5'],
-	    		['1b', '3', '5']
-	    	],
-	    	10: [
-	    		['1a', '1b', '3', '5'],
-	    		['2', '3', '5']
-	    	],
-	    	11: [
-	    		['1a', '2', '3', '5'],
-	    		['1b', '2', '3', '5']
-	    	],
-	    	12: [
-	    		['1a', '1b', '2', '3', '5']
-	    	]
-	    };
+    var REPRS = {
+    	0: [],
+    	1: [
+    		['1a'],
+    		['1b']
+    	],
+    	2: [
+    		['1a', '1b'],
+    		['2']
+    	],
+    	3: [
+    		['1a', '2'],
+    		['1b', '2'],
+    		['3']
+    	],
+    	4: [
+    		['1a', '3'],
+    		['1b', '3']
+    	],
+    	5: [
+    		['1a', '1b', '3'],
+    		['2', '3'],
+    		['5']
+    	],
+    	6: [
+    		['1a', '5'],
+    		['1b', '5'],
+    		['1a', '2', '3'],
+    		['1b', '2', '3']
+    	],
+    	7: [
+    		['1a', '1b', '2', '3'],
+    		['1a', '1b', '5'],
+    		['2', '5']
+    	],
+    	8: [
+    		['1a', '2', '5'],
+    		['1b', '2', '5'],
+    		['3', '5']
+    	],
+    	9: [
+    		['1a', '1b', '2', '5'],
+    		['1a', '3', '5'],
+    		['1b', '3', '5']
+    	],
+    	10: [
+    		['1a', '1b', '3', '5'],
+    		['2', '3', '5']
+    	],
+    	11: [
+    		['1a', '2', '3', '5'],
+    		['1b', '2', '3', '5']
+    	],
+    	12: [
+    		['1a', '1b', '2', '3', '5']
+    	]
+    };
 
-	    // Represents a timestamp that is rendered by the clock. The resolution is 5 minutes,
-	    // since the minute part represents every 5 minutes.
-	    function RenderedTime(hour, minute) {
-	    	this.hour = hour;
-	    	this.minute = minute;
-	    	this.hourParts = [];
-	    	this.minuteParts = [];
-	    }
+    // Represents a timestamp that is rendered by the clock. The resolution is 5 minutes,
+    // since the minute part represents every 5 minutes.
+    function RenderedTime(hour, minute) {
+    	this.hour = hour;
+    	this.minute = minute;
+    	this.hourParts = [];
+    	this.minuteParts = [];
+    }
 
-	    // Represents the rectangle that is being filled.
-	    function Rect(id, x, y, w, h) {
-	    	this.id = id;
-	    	this.x = x;
-	    	this.y = y;
-	    	this.w = w;
-	    	this.h = h;
-	    }
+    // Represents the rectangle that is being filled.
+    function Rect(id, x, y, w, h) {
+    	this.id = id;
+    	this.x = x;
+    	this.y = y;
+    	this.w = w;
+    	this.h = h;
+    }
 
-	    // Keeps track of the last time that was rendered. We use this to switch the display
-	    // only when the time actually changes. Otherwise the clock would constantly change
-	    // appearance with the same frequency as our animation, since we pick a random 
-	    // combination each time. 
-	    var lastRenderedTime = new RenderedTime(-1, -1);
+    // Keeps track of the last time that was rendered. We use this to switch the display
+    // only when the time actually changes. Otherwise the clock would constantly change
+    // appearance with the same frequency as our animation, since we pick a random 
+    // combination each time. 
+    var lastRenderedTime = new RenderedTime(-1, -1);
 
-	    var ONE_A = new Rect('1a', 2 * RECT_UNIT, 0, RECT_UNIT, RECT_UNIT);
+    var ONE_A = new Rect('1a', 2 * RECT_UNIT, 0, RECT_UNIT, RECT_UNIT);
 
-	    var ONE_B = new Rect('1b', 2 * RECT_UNIT, RECT_UNIT, RECT_UNIT, RECT_UNIT);
+    var ONE_B = new Rect('1b', 2 * RECT_UNIT, RECT_UNIT, RECT_UNIT, RECT_UNIT);
 
-	    var TWO = new Rect('2', 0, 0, 2 * RECT_UNIT, 2 * RECT_UNIT);
+    var TWO = new Rect('2', 0, 0, 2 * RECT_UNIT, 2 * RECT_UNIT);
 
-	    var THREE = new Rect('3', 0, 2 * RECT_UNIT, 3 * RECT_UNIT, 3 * RECT_UNIT);
+    var THREE = new Rect('3', 0, 2 * RECT_UNIT, 3 * RECT_UNIT, 3 * RECT_UNIT);
 
-	    var FIVE = new Rect('5', 3 * RECT_UNIT, 0, 5 * RECT_UNIT, 5 * RECT_UNIT);
+    var FIVE = new Rect('5', 3 * RECT_UNIT, 0, 5 * RECT_UNIT, 5 * RECT_UNIT);
 
 
 		function draw() {
