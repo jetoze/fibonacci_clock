@@ -126,6 +126,7 @@
 			}
 			fillRects(ctx, timeToRender);
 			drawBorders(ctx);
+			updateDigitalDisplay(time);
 		}
 
 		function getTimeToRender(time) {
@@ -204,18 +205,46 @@
 			}
 		}
 
+		function updateDigitalDisplay(time) {
+			var div = document.getElementById('digital');
+			div.innerHTML = formatForDisplay(time.getHours()) + ":" + formatForDisplay(time.getMinutes());
+		}
+
+		function formatForDisplay(n) {
+			return (n < 10) ? '0' + n : n;
+		}
+
 		function startClock() {
 			draw();
 			window.setInterval(draw, 5 * 1000);
 		}
 	</script>
+
 	<style type="text/css">
-		canvas { border: 1px solid black; }
+		canvas { 
+			border: 1px solid black; 
+		}
+		div {
+    	display: block;
+    	font-size: 180%;
+		}
 	</style>
+
 </head>
 <body onload="startClock();">
-	<canvas id="clock">
-		Fibonacci Clock
-	</canvas>
+	<table>
+		<tr>
+			<td>
+				<canvas id="clock">
+					Fibonacci Clock
+				</canvas>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="digital" align="center"></div>
+			</td>
+		</tr>
+	</table>	
 </body>
 </html>
