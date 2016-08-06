@@ -112,8 +112,20 @@
 			var ctx = canvas.getContext('2d');
 
 			var time = new Date();
-			console.log(time);
 			var timeToRender = getTimeToRender(time);
+			fillRects(ctx, timeToRender);
+			drawBorders(ctx);
+			updateDigitalDisplay(time);
+		}
+
+		function getTimeToRender(time) {
+			console.log(time);
+			var hours = time.getHours();
+			if (hours >= 12) {
+				hours -= 12;
+			}
+			var minutes = Math.floor(time.getMinutes() / 5);
+			var timeToRender = new RenderedTime(hours, minutes);
 			if ((timeToRender.hour === lastRenderedTime.hour) && (timeToRender.minute === lastRenderedTime.minute)) {
 				timeToRender = lastRenderedTime;
 				console.log('No change to render');
@@ -124,18 +136,7 @@
 				console.log('Hours: ' + timeToRender.hour + ' -> ' + timeToRender.hourParts);
 				console.log('Minutes: ' + time.getMinutes() + ' -> ' + timeToRender.minute + ' -> ' + timeToRender.minuteParts);
 			}
-			fillRects(ctx, timeToRender);
-			drawBorders(ctx);
-			updateDigitalDisplay(time);
-		}
-
-		function getTimeToRender(time) {
-			var hours = time.getHours();
-			if (hours >= 12) {
-				hours -= 12;
-			}
-			var minutes = Math.floor(time.getMinutes() / 5);
-			return new RenderedTime(hours, minutes);
+			return timeToRender;
 		}
 
 		function fillRects(ctx, timeToRender) {
