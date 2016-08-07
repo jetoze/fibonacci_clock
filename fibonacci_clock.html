@@ -207,8 +207,8 @@
 		}
 
 		function updateDigitalDisplay(time) {
-			var div = document.getElementById('digital');
-			div.innerHTML = formatForDisplay(time.getHours()) + ":" + formatForDisplay(time.getMinutes());
+			document.getElementById('digital-hours').innerHTML = time.getHours();
+			document.getElementById('digital-minutes').innerHTML = time.getMinutes();
 		}
 
 		function formatForDisplay(n) {
@@ -218,6 +218,27 @@
 		function startClock() {
 			draw();
 			window.setInterval(draw, 5 * 1000);
+			installDigitalBlink();
+		}
+
+		/**
+		 * Installs a timer that blinks the colon between the hours and minutes in the digital display.
+		 */
+		function installDigitalBlink() {
+			  // TODO: This should be done by the main animation loop itself. With two loops, like we have now,
+			  // the clock numbers will update independently of the colon-blink, which looks odd. We should have
+			  // one loop that runs every second. Each time through it toggles the blink. Every 5 seconds (or so)
+			  // we check if the Fibonacci clock should be updated. We can do that by keeping an internal counter.
+			  // Or, keep it simple and run everything every second. I don't think that's too taxing.
+				var blink = function() {
+					var show = true;
+					return function() {
+						var colon = document.getElementById('digital-colon');
+						colon.style.color = show ? '#000000' : '#ffffff';
+						show = !show;
+					};
+			}();
+			window.setInterval(blink, 1000);
 		}
 	</script>
 
@@ -228,6 +249,9 @@
 		div {
     	display: block;
     	font-size: 180%;
+    	font-family: "Arial Black", Gadget, sans-serif;
+    	display: inline-block;
+    	margin-right: 2px;
 		}
 	</style>
 
@@ -242,8 +266,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<div id="digital" align="center"></div>
+			<td align="center">
+				<div id="digital-hours"></div><div id="digital-colon">:</div><div id="digital-minutes"></div>
 			</td>
 		</tr>
 	</table>	
