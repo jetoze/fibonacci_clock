@@ -207,8 +207,8 @@
 		}
 
 		function updateDigitalDisplay(time) {
-			document.getElementById('digital-hours').innerHTML = time.getHours();
-			document.getElementById('digital-minutes').innerHTML = time.getMinutes();
+			document.getElementById('digital-hours').innerHTML = formatForDisplay(time.getHours());
+			document.getElementById('digital-minutes').innerHTML = formatForDisplay(time.getMinutes());
 		}
 
 		function formatForDisplay(n) {
@@ -231,13 +231,10 @@
 			  // we check if the Fibonacci clock should be updated. We can do that by keeping an internal counter.
 			  // Or, keep it simple and run everything every second. I don't think that's too taxing.
 				var blink = function() {
-					var show = true;
-					return function() {
-						var colon = document.getElementById('digital-colon');
-						colon.style.color = show ? '#000000' : '#ffffff';
-						show = !show;
-					};
-			}();
+					var colon = document.getElementById('digital-colon');
+					var new_visibility = (colon.style.visibility == '') ? 'hidden' : '';
+					colon.style.visibility = new_visibility;
+			};
 			window.setInterval(blink, 1000);
 		}
 	</script>
